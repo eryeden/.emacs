@@ -1,1 +1,1 @@
-(setq kkc-lookup-cache '(kkc-lookup-cache-2))
+(setq kkc-lookup-cache '(kkc-lookup-cache-2 (12365 t (12367 t (12385 t (12363 t (12378 (3 "着口数" "奇口数" "稀口数" "希口数" "黄口数" "貴口数"))))))))

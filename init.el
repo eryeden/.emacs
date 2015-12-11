@@ -2,11 +2,21 @@
 ;;; init.el
 ;;;
 
+;;; load shell
+;;;(exec-path-from-shell-initialize)
+
 ;;; loadpath:
 (add-to-list 'load-path "~/.emacs.d/elisp/")
 
 ;;;theme
 (load-theme 'tsdh-light t)
+
+
+;; Package Manegement
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(package-initialize)
 
 (require 'mozc)
 (set-language-environment "Japanese")
@@ -18,11 +28,7 @@
 (set-buffer-file-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
 
-;; Package Manegement
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(package-initialize)
+
 
 ;; 対応する括弧を表示させる
 (show-paren-mode 1)
@@ -41,6 +47,10 @@
 
 ;; tool-bar
 (tool-bar-mode 0)
+
+;; メニューバーにファイルパスを表示する filepathファイル
+(setq frame-title-format
+      (format "%%f - Emacs@%s" (system-name)))
 
 ;;Font settings
 (add-to-list 'default-frame-alist '(font . "ricty-11"))
@@ -94,7 +104,7 @@
 ;; (require 'smooth-scroll)
 ;; (smooth-scroll-mode t)
 ;; scroll one line at a time (less "jumpy" than defaults)
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+(setq mouse-wheel-scroll-amount '(5 ((shift) . 1))) ;; one line at a time
 (setq mouse-wheel-progressive-speed 'nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 ;; (setq scroll-step 1) ;; keyboard scroll one line at a time
@@ -104,6 +114,35 @@
 (setq scroll-step 1
       scroll-margin 1
       scroll-conservatively 100000)
+
+;; 日本語のインクリメンタル検索
+;; ref. http://qiita.com/catatsuy/items/c5fa34ead92d496b8a51
+(require 'migemo)
+(setq migemo-command "cmigemo")
+(setq migemo-options '("-q" "--emacs"))
+(setq migemo-dictionary "/usr/share/cmigemo/utf-8/migemo-dict")
+(setq migemo-user-dictionary nil)
+(setq migemo-regex-dictionary nil)
+(setq migemo-coding-system 'utf-8-unix)
+(load-library "migemo")
+(migemo-init)
+
+;; YaTeX
+(autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
+(setq auto-mode-alist (append
+  '(("\\.tex$" . yatex-mode)
+    ("\\.ltx$" . yatex-mode)
+    ("\\.cls$" . yatex-mode)
+    ("\\.sty$" . yatex-mode)
+    ("\\.clo$" . yatex-mode)
+    ("\\.bbl$" . yatex-mode)) auto-mode-alist))
+
+;;MarkDown mode
+(autoload 'markdown-mode "markdown-mode"
+   "Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
 
 
