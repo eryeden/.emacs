@@ -9,7 +9,7 @@
 (add-to-list 'load-path "~/.emacs.d/elisp/")
 
 ;;;theme
-(load-theme 'tsdh-light t)
+(load-theme 'tsdh-dark t)
 
 
 ;; Package Manegement
@@ -27,8 +27,11 @@
 (set-terminal-coding-system 'utf-8)
 (set-buffer-file-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
-
-
+(global-set-key (kbd "<zenkaku-hankaku>") 'toggle-input-method)
+(add-hook 'mozc-mode-hook
+  (lambda()
+    (define-key mozc-mode-map (kbd "<zenkaku-hankaku>") 'toggle-input-method)))
+(setq mozc-candidate-style 'echo-area) ;;変換候補をミニバッファで表示する。これにするとかなり快適になった。入力時の遅延もなくなった
 
 ;; 対応する括弧を表示させる
 (show-paren-mode 1)
@@ -136,6 +139,8 @@
     ("\\.sty$" . yatex-mode)
     ("\\.clo$" . yatex-mode)
     ("\\.bbl$" . yatex-mode)) auto-mode-alist))
+
+(setq YaTeX-kanji-code 4) ;;USE utf-8
 
 ;;MarkDown mode
 (autoload 'markdown-mode "markdown-mode"
